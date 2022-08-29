@@ -24,3 +24,37 @@ const movieDB = {
     ]
 };
 
+//////
+const adds = document.querySelector('.promo__adv');
+adds.remove();
+//////
+
+
+//////
+const genre = document.querySelector('.promo__genre');
+const newGenre = document.createElement('genre__drama');
+newGenre.innerHTML = '<p>Драма</p>';
+newGenre.style.fontSize = '24px';
+newGenre.style.color = 'white';
+genre.replaceWith(newGenre);
+//////
+
+//////
+const oldBg = document.querySelector('.promo__bg');
+//oldBg.style.backgroundColor = 'black';
+oldBg.style.backgroundImage = 'url(../img/bg.jpg)';
+//////
+
+//////
+const del = document.querySelectorAll('.delete');
+del.forEach(item => {
+    item.remove();
+});
+//////
+
+const filmItem = document.querySelectorAll('.promo__interactive-item');
+filmItem.sort();
+
+filmItem.forEach(item => {
+    item.insertHTML('afterbegin', '1');
+});
