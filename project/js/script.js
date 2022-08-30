@@ -25,8 +25,10 @@ const movieDB = {
 };
 
 //////
-const adds = document.querySelector('.promo__adv');
-adds.remove();
+const adds = document.querySelectorAll('.promo__adv img');
+adds.forEach(item => {
+    item.remove();    
+});
 //////
 
 
@@ -34,7 +36,7 @@ adds.remove();
 const genre = document.querySelector('.promo__genre');
 const newGenre = document.createElement('genre__drama');
 newGenre.innerHTML = '<p>Драма</p>';
-newGenre.style.fontSize = '24px';
+newGenre.style.fontSize = '16px';
 newGenre.style.color = 'white';
 genre.replaceWith(newGenre);
 //////
@@ -42,7 +44,7 @@ genre.replaceWith(newGenre);
 //////
 const oldBg = document.querySelector('.promo__bg');
 //oldBg.style.backgroundColor = 'black';
-oldBg.style.backgroundImage = 'url(../img/bg.jpg)';
+oldBg.style.backgroundImage = 'url(img/bg.jpg)'; //путь задается относительно index.html
 //////
 
 //////
@@ -52,9 +54,21 @@ del.forEach(item => {
 });
 //////
 
-const filmItem = document.querySelectorAll('.promo__interactive-item');
-filmItem.sort();
+const filmItem = document.querySelectorAll('.promo__interactive-list li');
+movieDB.movies.sort();
+// let i = 0;
+// filmItem.forEach(item => {
+//     item.replaceWith(`${i+1}: ${movieDB.movies[i]}`);
+//     i++;
+// });
 
-filmItem.forEach(item => {
-    item.insertHTML('afterbegin', '1');
+// conso;e.log(movies.innerHTML) позволяет получить верстку что там содержится;
+const filmList = document.querySelector('.promo__interactive-list');
+filmList.innerHTML = '';
+movieDB.movies.forEach((item, i) =>{
+    filmList.innerHTML +=
+    ` <li class="promo__interactive-item">${i+1}: ${movieDB.movies[i]}
+          <div class="delete"></div>
+      </li> 
+    `;
 });
