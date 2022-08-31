@@ -62,6 +62,22 @@ movieDB.movies.sort();
 //     i++;
 // });
 
+
+
+const btn = document.querySelector('.confirm');
+btn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const add = document.querySelector('.adding__input').value;
+    if (add.length > 21) {
+        add += '...';
+    }
+    movieDB.movies.push(add);
+});
+
+
+
+
 // conso;e.log(movies.innerHTML) позволяет получить верстку что там содержится;
 const filmList = document.querySelector('.promo__interactive-list');
 filmList.innerHTML = '';
@@ -72,3 +88,4 @@ movieDB.movies.forEach((item, i) =>{
       </li> 
     `;
 });
+
