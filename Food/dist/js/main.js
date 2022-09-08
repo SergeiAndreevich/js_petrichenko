@@ -2,23 +2,28 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 	//по клику меню должны меняться картинка, текст и подсветка пункта меню
 	const tabs = document.querySelectorAll('.tabheader__item'),
-		tabsContent = document.querySelectorAll(.tabcontent),
+		tabsContent = document.querySelectorAll('.tabcontent'),
 		tabsParent = document.querySelector('.tabheader__items');
 
 		//скроем все табы, чтобы было проще работать
 		function hideTabsContent (){
 			tabsContent.forEach(item => {
-				item.style.display = 'none';
+				item.classList.add('hide');
+				item.classList.remove('show', 'fade');
 			});
 
 			tabs.forEach(item => {
 				item.classList.remove('tabheader__item_active');
 			});
+			console.log('hide');
 		}
 		
 		function showTabContent (i = 0) {
-			tabsContent[i].style.display = 'block';
+			tabsContent[i].classList.add('show', 'fade');
+			tabsContent[i].classList.remove('hide');
 			tabs[i].classList.add('tabheader__item_active');
+			console.log('show');
+
 		}
 
 		hideTabsContent();
