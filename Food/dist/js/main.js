@@ -102,11 +102,52 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	
 
 //modal
-	const btns = document.querySelectorAll('.modal');
+	//const btns = document.querySelectorAll('.modal-btn'),
+	const btns = document.querySelectorAll('[data-modal]'),
+		//modalWindow = document.querySelector('.modal__content'),
+		modal = document.querySelector('.modal'),
+		modalCloseBtn = document.querySelector('[data-close]');
+
+//алгоритм работы модального окна:
+//жмем по кнопке, затемняется весь скрин и по центру появляется окно
+//окно спозиционировано относительно текущаго положения экрана, чтобы было четко посередине
+//я так понимаю это нужно вспомнить позиционирование css
+
+
 	btns.forEach(item=>{
 		item.addEventListener('click', ()=>{
 			console.log('modal');
-
+			//document.documentElement.style.backgroundColor= 'black';
+			//document.documentElement.opacity = '50%';	
+			modal.classList.add('show');
+			modal.classList.remove('hide');
+			document.body.style.overflow = 'hidden'; //запрет скролла
+			//modal.classList.toggle('show');
 		})
+	});
+
+	modalCloseBtn.addEventListener('click', ()=>{
+		closeModal();
+		//modal.classList.toggle('show');
+		//либо вручную переклюяаем, либо через тогл
+	});	
+
+	function closeModal (){
+		modal.classList.remove('show');
+		modal.classList.add('hide');
+		document.body.style.overflow = '';
+	}
+	
+	//как сделать закрытие модалки по экрану или клавишу esc?
+	modal.addEventListener('click', (e)=>{
+		if(e.target === modal){
+			closeModal();
+		}
+	}); //это закрытие по экрану
+	//а теперь как закрыть по клавише
+	document.addEventListener('keydown', (e)=>{
+		if(e.code === 'Escape' && modal.classList.contains('show')){
+			closeModal();
+		}
 	});
 });
