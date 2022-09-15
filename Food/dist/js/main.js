@@ -100,4 +100,13 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	}
 	}
 	
+
+//modal
+	const btns = document.querySelectorAll('.modal');
+	btns.forEach(item=>{
+		item.addEventListener('click', ()=>{
+			console.log('modal');
+
+		})
+	});
 });
