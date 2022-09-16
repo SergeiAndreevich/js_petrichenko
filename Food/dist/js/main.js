@@ -119,12 +119,17 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			console.log('modal');
 			//document.documentElement.style.backgroundColor= 'black';
 			//document.documentElement.opacity = '50%';	
-			modal.classList.add('show');
-			modal.classList.remove('hide');
-			document.body.style.overflow = 'hidden'; //запрет скролла
-			//modal.classList.toggle('show');
+			openModal();
 		})
 	});
+
+	function openModal (){
+		modal.classList.add('show');
+		modal.classList.remove('hide');
+		document.body.style.overflow = 'hidden'; //запрет скролла
+		//modal.classList.toggle('show');	
+		clearInterval(modalTimer);	
+	}
 
 	modalCloseBtn.addEventListener('click', ()=>{
 		closeModal();
@@ -150,4 +155,23 @@ window.addEventListener('DOMContentLoaded', ()=>{
 			closeModal();
 		}
 	});
+
+//тперь нужно, чтобы модалка всплывала, когда мы долистали до конца или же до определенного момента
+	const modalTimer = setTimeout(openModal, 15000); //по времени есть
+	//теперь по скроллу
+	// window.addEventListener('scroll', ()=>{
+	// 	//как понять что пользователь долистал до конца?
+	// 	//сложи размер ползунка(видимой части экрана) с уже проскроленным путем и сравни с общим скроллом
+	// 	if(document.documentElement.clientHeight + window.pageYOffset >= document.documentElement.scrollHeight){
+	// 		openModal();
+	// 	}
+	// } //,{once: true} //здесь не сработает, тк скролл работает на единичку при прокрутке на 1px. а до низу листать далеко не один пиксель
+	// );
+	function showModalByScroll(){
+		if(document.documentElement.clientHeight + window.pageYOffset >= document.documentElement.scrollHeight){
+			openModal();
+			window.removeEventListener('scroll', showModalByScroll);
+		}
+	}
+	window.addEventListener('scroll', showModalByScroll);
 });
