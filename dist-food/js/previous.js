@@ -1,4 +1,4 @@
-ыwindow.addEventListener('DOMContentLoaded', ()=>{
+window.addEventListener('DOMContentLoaded', ()=>{
 
 //Tabs
 
@@ -52,7 +52,7 @@
 
 //Timer
 
-	const deadLine = '2022-09-15';
+	const deadLine = '2022-11-15';
 	setClock('.timer', deadLine);
 
 	//функция, что будет определять разницу между дедлайном и нашем теккущам временем
@@ -105,9 +105,8 @@
 	//const btns = document.querySelectorAll('.modal-btn'),
 	const btns = document.querySelectorAll('[data-modal]'),
 		//modalWindow = document.querySelector('.modal__content'),
-		modal = document.querySelector('.modal');
-
-		//modalCloseBtn = document.querySelector('[data-close]');
+		modal = document.querySelector('.modal'),
+		modalCloseBtn = document.querySelector('[data-close]');
 
 //алгоритм работы модального окна:
 //жмем по кнопке, затемняется весь скрин и по центру появляется окно
@@ -132,11 +131,11 @@
 		clearInterval(modalTimer);	
 	}
 
-	// modalCloseBtn.addEventListener('click', ()=>{
-	// 	closeModal();
-	// 	//modal.classList.toggle('show');
-	// 	//либо вручную переклюяаем, либо через тогл
-	// });	
+	modalCloseBtn.addEventListener('click', ()=>{
+		closeModal();
+		//modal.classList.toggle('show');
+		//либо вручную переклюяаем, либо через тогл
+	});	
 
 	function closeModal (){
 		modal.classList.remove('show');
@@ -146,7 +145,7 @@
 	
 	//как сделать закрытие модалки по экрану или клавишу esc?
 	modal.addEventListener('click', (e)=>{
-		if(e.target === modal || e.target.getAttribute('data-close') == ''){
+		if(e.target === modal){
 			closeModal();
 		}
 	}); //это закрытие по экрану
@@ -176,7 +175,7 @@
 	}
 	window.addEventListener('scroll', showModalByScroll);
 
-//Классы и плашки
+/////////////Классы и плашки
 	class MenuCard{
 		constructor(src, alt, title, descr, price, parentSelector, ...classes){
 			//рест оператор всегда формирует массив.
@@ -260,135 +259,56 @@
 	div3.render();
 
 
-//работа с сервером
+//////////работа с сервером
 	//forms
 	const forms = document.querySelectorAll('form');
 
 	const message = {
-		loading: 'img/spinner.svg',
+		loading: 'Загрузка...',
 		success: 'Успешно. Мы перезвоним Вам через минуту',
 		error: 'Ошибка. Попробуйте снова'
 	}
 
 	forms.forEach(item=>{
-		bindPostData(item);
+		postData(item);
 	});
 
-/////
-	const postData = async (url, data) => {
-		// async await - это парные операторы. Асинк ставим перед тем, что будет асинхронно выполняться. А эвейт перед тем, результата работы чего нужно дождаться
-	//по стандарту эвейт ждет аж до 30 секунд
-		const res = await fetch( url, {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json'
-			},
-			body: data
-
-		});
-		return await res.json();
-		// тк фетч - это промис, то выполняется он асинхронно и непонятно когда будет выполнен. А код идет дальше и в переменную res присваивается ничего
-		// а у ничего нету метода джейсон и получается ошибка. Значит, нужно это как-то защитить и обработать
-		// решение этой проблемы - это async и await
-	};
-
-	//если у тебя есть какие-то работы с сервером, таймауты и тп, всегда продумывай код. Чтобы не было ошибок и он ждал где нужно
-
-
-	function bindPostData (form) {
+	function postData (form) {
 		form.addEventListener('submit', (e)=>{
 			e.preventDefault();
 
-			const statusMessage = document.createElement('img');
-			statusMessage.src = message.loading;
-			statusMessage.style.cssText = `
-				display: block;
-				margin: 0 auto;
-			`;
-			form.insertAdjacentElement('afterend', statusMessage);
+			const statusMessage = document.createElement('div');
+			statusMessage.classList.add('status');
+			statusMessage.textContent = message.loading;
+			form.append(statusMessage);
 			//нам при успехе нужно выводить какое-то сообщение. 
 			//Для этого создаем динамически окно
 			//туда записываем текст и добавляем его в html
 
-////		// const request = new XMLHttpRequest();
-////		// request.open('POST','server.php');
+			const request = new XMLHttpRequest();
+			request.open('POST','server.php');
 
 //			request.setRequestHeader('Content-type', 'multipart/form-data');
 			const formData = new FormData(form);
 			//такой объект мы создаем, чтобы сгруппировать всю информацию в объект и отправить на сервер. 
 			//это гораздо проще, чем поштучно доставать значения и формитровать их в объект
 
-////		//request.send(formData);
+			request.send(formData);
 
-			/// request.addEventListener('load', ()=>{
-			/// 	if(request.status === 200){
-			/// 	 showThanksModal(message.success);
-			///	 console.log(request.response);
-			/// 	 form.reset();
-			/// 	 statusMessage.remove();
-				
-			// 	} else { showThanksModal(message.error);}
-			// });
-			const object = {};
-			formData.forEach((value, key) =>{
-				object[key] = value;
+			request.addEventListener('load', ()=>{
+				if(request.status === 200){
+				 statusMessage.textContent = message.success;
+				 console.log(request.response);
+				 form.reset();
+				 setTimeout(()=>{
+				 	statusMessage.remove();
+				 }, 2000);
+				} else { statusMessage.textContent = message.error;}
 			});
-//////////////////////////////////////////////////////////
-								// fetch('server.php', {
-								// 	method: 'POST',
-								// 	headers: {
-								// 		'Content-type': 'application/json'
-								// 	},
-								// 	body: JSON.stringify(object)
-								// })
-			postData('server.php', JSON.stringify(object))
-			.then(data=> data.text()) //если данные точно текстовые, то таким способом мы говорим серверу, ято нам их нужно показать 
-			.then(data=>{
-				console.log(data);
-				showThanksModal(message.success);
-				statusMessage.remove();
-			})
-			.catch(()=>{
-				showThanksModal(message.error);
-			})
-			.finally(()=>{
-				form.reset();
-			})
-//////////////////////////////////////////////////////////
-
-//			для фетча важно помнить!
-// он не считает код ошибки 404, 502 и тп за ошибку
-// это лишь код статуса, но по факту ведь общение с сервером идет? идет
-//фетч выкидывает ошибку только при сбои сети или еще чет,
-//т.е. если обшение с сервером не произошло или нарушено
-
-//вот если отрубить интернет, то выкинет ошибку
-
-
-
 		});
 	}
 
-	function showThanksModal(message){
-		const previousModal = document.querySelector('.modal__dialog');
-		previousModal.classList.add('hide'); //скрываем, а не удаляем, потому что он нам потом может пригодиться
-		openModal();
-
-		const thanksModal = document.createElement('div');
-		thanksModal.classList.add('modal__dialog');
-		thanksModal.innerHTML = `
-			<div class='modal__content'>
-				<div class='modal__close' data-close>&times;</div>
-				<div class='modal__title'>${message}</div>
-			</div>
-		`;
-
-		document.querySelector('.modal').append(thanksModal);
-		setTimeout(()=>{
-			thanksModal.remove(); 
-			previousModal.classList.add('show');
-			previousModal.classList.remove('hide');
-			closeModal();
-		}, 4000);
-	}
+	fetch('db.json')
+	.then(data => data.json())
+	.then(res => console.log(res));
 });
