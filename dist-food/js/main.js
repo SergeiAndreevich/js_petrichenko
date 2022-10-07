@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 //Timer
 
-	const deadLine = '2022-09-15';
+	const deadLine = '2022-11-15';
 	setClock('.timer', deadLine);
 
 	//функция, что будет определять разницу между дедлайном и нашем теккущам временем
@@ -175,7 +175,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	}
 	window.addEventListener('scroll', showModalByScroll);
 
-//Классы и плашки
+/////////////Классы и плашки
 	class MenuCard{
 		constructor(src, alt, title, descr, price, parentSelector, ...classes){
 			//рест оператор всегда формирует массив.
@@ -259,7 +259,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
 	div3.render();
 
 
-//работа с сервером
+//////////работа с сервером
 	//forms
 	const forms = document.querySelectorAll('form');
 
