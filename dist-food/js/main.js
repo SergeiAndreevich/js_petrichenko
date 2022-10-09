@@ -1,4 +1,4 @@
-ыwindow.addEventListener('DOMContentLoaded', ()=>{
+window.addEventListener('DOMContentLoaded', ()=>{
 
 //Tabs
 
