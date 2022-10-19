@@ -305,13 +305,13 @@ window.addEventListener('DOMContentLoaded', ()=>{
 		return await res.json();
 	};
 
-	getResourse('')
-	.then( data =>{
-		data.forEach(({img, altimg, title, descr, price}) => {
-			new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-			// надо бы писать (obj.img, obj.altimg, etc) но это неудобно поэтому воспользуемся деструктуризацией объекта и вместо obj запишем объект
-		} )	
-	});
+	// getResourse('')
+	// .then( data =>{
+	// 	data.forEach(({img, altimg, title, descr, price}) => {
+	// 		new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+	// 		// надо бы писать (obj.img, obj.altimg, etc) но это неудобно поэтому воспользуемся деструктуризацией объекта и вместо obj запишем объект
+	// 	} )	
+	// });
 
 	//если у тебя есть какие-то работы с сервером, таймауты и тп, всегда продумывай код. Чтобы не было ошибок и он ждал где нужно
 
@@ -415,28 +415,35 @@ window.addEventListener('DOMContentLoaded', ()=>{
 
 
 	//slider
-    const sliderParent = document.querySelector('.offer__slider'),
-        currentPage = document.querySelector('#current'),
+    const currentPage = document.querySelector('#current'),
+		total = document.querySelector('#total'),
         buttonLeft = document.querySelector('.offer__slider-prev'),
         buttonRight = document.querySelector('.offer__slider-next');
         const slides = document.querySelectorAll('.offer__slide');
     let slideIndex = 1;
 
+	if(slides.length < 10){
+		total.textContent = `0${slides.length}`;
+	} else{
+		total.textContent = slides.length;
+	}
+
     function showSlide(n){
         if(n > slides.length){
             slideIndex = 1;
-        }
-        if(n < 1){
+        } else if(n < 1){
             slideIndex = slides.length;
-        }
-        slides.forEach(item => {
+        } 
+		slides.forEach(item => {
             item.style.display = 'none';
         });
         slides[slideIndex-1].style.display = 'block';
 
         if(slides.length < 10){
             currentPage.textContent = `0${n}`;
-        }
+        } else {
+			currentPage.textContent = n;
+		}
     }
     showSlide(slideIndex);
 
@@ -445,8 +452,10 @@ window.addEventListener('DOMContentLoaded', ()=>{
     }
     buttonLeft.addEventListener('click', () =>{
         plusSlide(-1);
+		console.log('clickL');
     });
     buttonRight.addEventListener('click', () =>{
         plusSlide(1);
+		console.log('clickR');
     });
 });
